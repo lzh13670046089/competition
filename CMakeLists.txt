@@ -12,7 +12,7 @@ if(NOT CMAKE_CXX_STANDARD)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic)
+  # add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
 
@@ -38,7 +38,7 @@ ament_target_dependencies(convert rclcpp std_msgs sensor_msgs geometry_msgs tf2 
 
 
 target_link_libraries(convert
-  ${Boost_SYSTEM_LIBRARY}  # pcl_conversions requires this
+  ${Boost_SYSTEM_LIBRARY} ${PCL_LIBRARIES} # pcl_conversions requires this
 )
 
 if(BUILD_TESTING)
@@ -64,3 +64,7 @@ install(
 
 ament_export_include_directories(include)
 ament_package()
+
+SET(CMAKE_BUILD_TYPE "Debug")
+SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g -ggdb")
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
